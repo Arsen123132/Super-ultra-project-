@@ -185,7 +185,7 @@ class SettingsMenu(Menu):
                 app.button_font,
                 app.text_color,
                 app.corner_radius,
-                on_click=self.toggle_fullscreen
+                on_click=self.change_resolution
             ),
             Button(
                 back_rect,
@@ -207,15 +207,22 @@ class SettingsMenu(Menu):
             self.app.audio = "on"
             print("AUDIO ON")
 
-    def toggle_fullscreen(self):
-        if self.app.is_fullscreen:
-            pygame.display.set_mode((self.app.SCREEN_WIDTH, self.app.SCREEN_HEIGHT))
-            self.app.is_fullscreen = False
-            print("WINDOWED")
-        else:
-            pygame.display.set_mode((self.app.SCREEN_WIDTH, self.app.SCREEN_HEIGHT), pygame.FULLSCREEN)
-            self.app.is_fullscreen = True
-            print("FULLSCREEN")
+    def change_resolution(self):
+    
+        if (self.app.SCREEN_WIDTH, self.app.SCREEN_HEIGHT) == (1920, 1080):
+            self.app.SCREEN_WIDTH, self.app.SCREEN_HEIGHT = 1920, 1200
+            print("16x10")
+        elif (self.app.SCREEN_WIDTH, self.app.SCREEN_HEIGHT) == (1920, 1200):
+            self.app.SCREEN_WIDTH, self.app.SCREEN_HEIGHT = 1440, 1080
+            print("4x3")
+        elif (self.app.SCREEN_WIDTH, self.app.SCREEN_HEIGHT) == (1440, 1080):
+            self.app.SCREEN_WIDTH, self.app.SCREEN_HEIGHT = 1920, 1080
+            print("16x9")
+
+    
+        self.app.screen = pygame.display.set_mode(
+            (self.app.SCREEN_WIDTH, self.app.SCREEN_HEIGHT)
+    )
 
     def back_to_main(self):
         self.app.current_menu = self.app.set_menu("main")
@@ -260,7 +267,7 @@ class App:
     """
 
     def __init__(self):
-        self.SCREEN_WIDTH, self.SCREEN_HEIGHT = 1800, 1200
+        self.SCREEN_WIDTH, self.SCREEN_HEIGHT = 1920, 1080
         self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
         pygame.display.set_caption("super cooool project ;)")
         self.icon = pygame.image.load("images/smug.png")
